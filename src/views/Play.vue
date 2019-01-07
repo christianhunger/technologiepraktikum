@@ -4,7 +4,7 @@
     <h2 class="subtitle">Which one do you like best?</h2>
     <Comparator :opponentId1="this.opponentIds.firstId" :opponentId2="this.opponentIds.secondId" v-on:winner="handleRoundResult"/>
     <h2 class="subtitle" style="margin-bottom: 6px">The Current Rating:</h2>
-    <RankingStrip :opponentsSortedByRating="allKittensSortedByTheirRating"/>
+    <RankingStrip :opponentsSortedByRating="allOpponentsSortedByTheirRating"/>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["allKittensSortedByTheirRating"])
+    ...mapGetters(["allOpponentsSortedByTheirRating"])
   },
   ready() {
     this.startNextRound();
