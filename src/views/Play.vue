@@ -41,7 +41,7 @@ export default {
       const opponentId1 = this.opponents.opponentId1;
       const opponentId2 = this.opponents.opponentId2;
 
-      this.$store.commit("updateRating", {
+      this.$store.dispatch("updateRatingAction", {
         opponentId1,
         opponentId2,
         winnerId

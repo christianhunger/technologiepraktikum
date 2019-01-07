@@ -9,8 +9,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    config: {
+      useLocalOpponents: true
+    },
     opponents: {
-      ...kittens
+      local: {
+        ...kittens
+      },
+      remote: {}
     }
   },
   mutations: {
@@ -21,9 +27,12 @@ export default new Vuex.Store({
      * @param opponentId2
      * @param winnerId
      */
-    updateRating(state, { opponentId1, opponentId2, winnerId }) {
-      const opponent1 = state.opponents[opponentId1];
-      const opponent2 = state.opponents[opponentId2];
+    updateRatingMutation(
+      state,
+      { opponentSrc, opponentId1, opponentId2, winnerId }
+    ) {
+      const opponent1 = state.opponents[opponentSrc][opponentId1];
+      const opponent2 = state.opponents[opponentSrc][opponentId2];
       const didOpponent1Win = winnerId === opponentId1;
       const { playerRating, opponentRating } = EloRating.calculate(
         opponent1.rating,
@@ -34,11 +43,29 @@ export default new Vuex.Store({
       opponent2.rating = opponentRating;
     }
   },
-  actions: {},
+  actions: {
+    updateRatingAction({ commit, getters }, parameterObject) {
+      // Getters can't be accessed inside of mutations.
+      // To switch dynamically between local & remote opponents, we have to wrap the commit
+      // of the mutation in an action.
+      parameterObject.opponentSrc = getters.opponentSrc;
+      commit("updateRatingMutation", parameterObject);
+    }
+  },
   getters: {
-    allOpponentsSortedByTheirRating(state) {
+    opponentSrc(state) {
+      return state.config.useLocalOpponents ? "local" : "remote";
+    },
+    currentOpponents(state) {
+      if (state.config.useLocalOpponents) {
+        return state.opponents.local;
+      } else {
+        return state.opponents.remote;
+      }
+    },
+    allOpponentsSortedByTheirRating(state, getters) {
       // @see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries.
-      return Object.entries(state.opponents)
+      return Object.entries(getters.currentOpponents)
         .map(entry => {
           return {
             id: entry[0],
