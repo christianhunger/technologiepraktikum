@@ -4,7 +4,7 @@
       <router-link to="/">Play</router-link> |
       <router-link to="/leaderboard">Leaderboard</router-link>
     </div>
-    <img src="/assets/logo.png" width="64"/>
+    <img src="logo.png" width="64"/>
     <router-view/>
   </div>
 </template>
