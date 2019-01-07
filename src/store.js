@@ -48,43 +48,13 @@ export default new Vuex.Store({
         name: "Lucky",
         rating: 1000
       }
-      /* kitten11: {
-        rating: 1000
-      },
-      kitten12: {
-        rating: 1000
-      },
-      kitten13: {
-        rating: 1000
-      },
-      kitten14: {
-        rating: 1000
-      },
-      kitten15: {
-        rating: 1000
-      },
-      kitten16: {
-        rating: 1000
-      },
-      kitten17: {
-        rating: 1000
-      },
-      kitten18: {
-        rating: 1000
-      },
-      kitten19: {
-        rating: 1000
-      },
-      kitten20: {
-        rating: 1000
-      } */
     }
   },
   mutations: {
-    updateRating(state, { kittenId1, kittenId2, winnerId }) {
-      const kitten1 = state.kittens[kittenId1];
-      const kitten2 = state.kittens[kittenId2];
-      const didKitten1Win = winnerId === kittenId1;
+    updateRating(state, { firstId, secondId, winnerId }) {
+      const kitten1 = state.kittens[firstId];
+      const kitten2 = state.kittens[secondId];
+      const didKitten1Win = winnerId === firstId;
       const { playerRating, opponentRating } = EloRating.calculate(
         kitten1.rating,
         kitten2.rating,
