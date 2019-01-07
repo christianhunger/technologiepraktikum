@@ -2,24 +2,24 @@
   <div class="home">
     <h1 class="title">Kitten Compare</h1>
     <h2 class="subtitle">Which one do you like best?</h2>
-    <KittenComparator :kittenId1="this.opponentIds.firstId" :kittenId2="this.opponentIds.secondId" v-on:winner="handleRoundResult"/>
+    <Comparator :opponentId1="this.opponentIds.firstId" :opponentId2="this.opponentIds.secondId" v-on:winner="handleRoundResult"/>
     <h2 class="subtitle" style="margin-bottom: 6px">The Current Rating:</h2>
-    <KittenRankingStrip :kittensSortedByRating="allKittensSortedByTheirRating"/>
+    <RankingStrip :opponentsSortedByRating="allKittensSortedByTheirRating"/>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 // @ is an alias to /src
-import KittenComparator from "@/components/KittenComparator.vue";
-import KittenRankingStrip from "@/components/KittenRankingStrip.vue";
+import Comparator from "@/components/Comparator.vue";
+import RankingStrip from "@/components/RankingStrip.vue";
 import { twoDifferentRandomIdsInRange } from "@/util/IdGeneratorUtil.js";
 
 export default {
   name: "home",
   components: {
-    KittenComparator,
-    KittenRankingStrip
+    Comparator,
+    RankingStrip
   },
   data() {
     return {
