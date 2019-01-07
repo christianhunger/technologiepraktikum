@@ -4,10 +4,10 @@
     <h2 class="subtitle">The Current Kitten Ranking</h2>
 
     <ul id="leaderbord">
-      <li v-for="kitten in allOpponentsSortedByTheirRating" :key="kitten.name" style="padding-bottom: 16px">
-        <img :width="imageWidthBasedOnRanking(kitten.rating)" :src="require(`../assets/kitten${kitten.id}.jpg`)" />
-        <h2 class="subtitle">{{ kitten.name }}</h2>
-        Rating: {{ kitten.rating }}
+      <li v-for="opponent in allOpponentsSortedByTheirRating" :key="opponent.name" style="padding-bottom: 16px">
+        <img :width="imageWidthBasedOnRanking(opponent.rating)" :src="require(`../assets/kitten${opponent.id}.jpg`)" />
+        <h2 class="subtitle">{{ opponent.name }}</h2>
+        Rating: {{ opponent.rating }}
       </li>
     </ul>
   </div>
