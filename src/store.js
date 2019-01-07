@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    kittens: {
+    opponents: {
       1: {
         name: "Tiger",
         rating: 1000
@@ -52,30 +52,30 @@ export default new Vuex.Store({
   },
   mutations: {
     updateRating(state, { firstId, secondId, winnerId }) {
-      const kitten1 = state.kittens[firstId];
-      const kitten2 = state.kittens[secondId];
-      const didKitten1Win = winnerId === firstId;
+      const opponent1 = state.opponents[firstId];
+      const opponent2 = state.opponents[secondId];
+      const didOpponent1Win = winnerId === firstId;
       const { playerRating, opponentRating } = EloRating.calculate(
-        kitten1.rating,
-        kitten2.rating,
-        didKitten1Win
+        opponent1.rating,
+        opponent2.rating,
+        didOpponent1Win
       );
-      kitten1.rating = playerRating;
-      kitten2.rating = opponentRating;
+      opponent1.rating = playerRating;
+      opponent2.rating = opponentRating;
     }
   },
   actions: {},
   getters: {
-    allKittensSortedByTheirRating(state) {
-      const kittens = Object.entries(state.kittens)
+    allOpponentsSortedByTheirRating(state) {
+      // @see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries.
+      return Object.entries(state.opponents)
         .map(entry => {
           return {
             id: entry[0],
             ...entry[1]
           };
         })
-        .sort((kitten1, kitten2) => kitten2.rating - kitten1.rating);
-      return kittens;
+        .sort((opponent1, opponent2) => opponent2.rating - opponent1.rating);
     }
   }
 });
