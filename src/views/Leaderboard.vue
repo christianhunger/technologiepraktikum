@@ -5,7 +5,7 @@
 
     <ul id="leaderbord">
       <li v-for="opponent in allOpponentsSortedByTheirRating" :key="opponent.name" style="padding-bottom: 16px">
-        <img :width="imageWidthBasedOnRanking(opponent.rating)" :src="require(`../assets/kitten${opponent.id}.jpg`)" />
+        <img :width="imageWidthBasedOnRanking(opponent.rating)" :src="opponent.imageUrl" />
         <h2 class="subtitle">{{ opponent.name }}</h2>
         Rating: {{ opponent.rating }}
       </li>

@@ -1,7 +1,7 @@
 <template>
   <ul class="rankingStrip">
     <li class="rankingStripOpponentWrapper" v-for="opponent in opponentsSortedByRating" :key="opponent.name">
-      <img class="rankingStripOpponentImage" :src="require(`../assets/kitten${opponent.id}.jpg`)" />
+      <img class="rankingStripOpponentImage" :src="opponent.imageUrl" />
     </li>
   </ul>
 </template>

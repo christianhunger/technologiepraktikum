@@ -2,7 +2,11 @@
   <div class="home">
     <h1 class="title">Kitten Compare</h1>
     <h2 class="subtitle">Which one do you like best?</h2>
-    <Comparator :opponentId1="this.opponents.opponentId1" :opponentId2="this.opponents.opponentId2" v-on:winner="handleRoundResult"/>
+    <Comparator :id1="this.currentRound.opponent1.id"
+                :id2="this.currentRound.opponent2.id"
+                :imageUrl1="this.currentRound.opponent1.imageUrl"
+                :imageUrl2="this.currentRound.opponent2.imageUrl"
+                v-on:winner="handleRoundResult"/>
     <h2 class="subtitle" style="margin-bottom: 6px">The Current Rating:</h2>
     <RankingStrip :opponentsSortedByRating="allOpponentsSortedByTheirRating"/>
   </div>
@@ -23,14 +27,21 @@ export default {
   },
   data() {
     return {
-      opponents: {
-        opponentId1: null,
-        opponentId2: null
+      // Model for the current game round.
+      currentRound: {
+        opponent1: {
+          id: null,
+          imageUrl: null
+        },
+        opponent2: {
+          id: null,
+          imageUrl: null
+        }
       }
     };
   },
   computed: {
-    ...mapGetters(["allOpponentsSortedByTheirRating"])
+    ...mapGetters(["allOpponentsSortedByTheirRating", "imageUrlForOpponent"])
   },
   created() {
     // @see: https://vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks.
@@ -38,8 +49,8 @@ export default {
   },
   methods: {
     handleRoundResult(winnerId) {
-      const opponentId1 = this.opponents.opponentId1;
-      const opponentId2 = this.opponents.opponentId2;
+      const opponentId1 = this.currentRound.opponent1.id;
+      const opponentId2 = this.currentRound.opponent2.id;
 
       this.$store.dispatch("updateRatingAction", {
         opponentId1,
@@ -50,9 +61,15 @@ export default {
     },
     startNextRound() {
       const { firstId, secondId } = twoDifferentRandomIdsInRange(1, 10);
-      this.opponents = {
-        opponentId1: firstId,
-        opponentId2: secondId
+      this.currentRound = {
+        opponent1: {
+          id: firstId,
+          imageUrl: this.imageUrlForOpponent(firstId)
+        },
+        opponent2: {
+          id: secondId,
+          imageUrl: this.imageUrlForOpponent(secondId)
+        }
       };
     }
   }

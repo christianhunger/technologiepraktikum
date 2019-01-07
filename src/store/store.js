@@ -56,6 +56,9 @@ export default new Vuex.Store({
     opponentSrc(state) {
       return state.config.useLocalOpponents ? "local" : "remote";
     },
+    imageUrlForOpponent: (state, getters) => opponentId => {
+      return getters.currentOpponents[opponentId].imageUrl;
+    },
     currentOpponents(state) {
       if (state.config.useLocalOpponents) {
         return state.opponents.local;
