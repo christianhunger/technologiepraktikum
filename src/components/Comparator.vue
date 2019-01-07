@@ -2,12 +2,12 @@
   <div class="columns">
     <div class="column">
       <img v-bind:src="imagePath(opponentId1)" />
-      <a class="button is-primary is-large" v-on:click="$emit('winner', opponentId1)">Opponent A</a>
+      <a v-if="opponentId1" class="button is-primary is-large" v-on:click="$emit('winner', opponentId1)">Opponent A</a>
     </div>
 
     <div class="column">
       <img v-bind:src="imagePath(opponentId2)" />
-      <a class="button is-primary is-large" v-on:click="$emit('winner', opponentId2)">Opponent B</a>
+      <a v-if="opponentId2" class="button is-primary is-large" v-on:click="$emit('winner', opponentId2)">Opponent B</a>
     </div>
   </div>
 </template>
@@ -21,8 +21,11 @@ export default {
   },
   methods: {
     imagePath(opponentId) {
-      // TODO: handle null values
-      return opponentId ? require(`../assets/kitten${opponentId}.jpg`) : 1;
+      if (opponentId) {
+        return require(`../assets/kitten${opponentId}.jpg`);
+      } else {
+        return require(`../assets/loading.jpg`);
+      }
     }
   }
 };

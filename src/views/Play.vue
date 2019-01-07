@@ -2,7 +2,7 @@
   <div class="home">
     <h1 class="title">Kitten Compare</h1>
     <h2 class="subtitle">Which one do you like best?</h2>
-    <Comparator :opponentId1="this.opponentIds.firstId" :opponentId2="this.opponentIds.secondId" v-on:winner="handleRoundResult"/>
+    <Comparator :opponentId1="this.opponents.opponentId1" :opponentId2="this.opponents.opponentId2" v-on:winner="handleRoundResult"/>
     <h2 class="subtitle" style="margin-bottom: 6px">The Current Rating:</h2>
     <RankingStrip :opponentsSortedByRating="allOpponentsSortedByTheirRating"/>
   </div>
@@ -23,25 +23,37 @@ export default {
   },
   data() {
     return {
-      opponentIds: twoDifferentRandomIdsInRange(1, 10)
+      opponents: {
+        opponentId1: null,
+        opponentId2: null
+      }
     };
   },
   computed: {
     ...mapGetters(["allOpponentsSortedByTheirRating"])
   },
-  ready() {
+  created() {
+    // @see: https://vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks.
     this.startNextRound();
   },
   methods: {
     handleRoundResult(winnerId) {
-      const firstId = this.opponentIds.firstId;
-      const secondId = this.opponentIds.secondId;
+      const opponentId1 = this.opponents.opponentId1;
+      const opponentId2 = this.opponents.opponentId2;
 
-      this.$store.commit("updateRating", { firstId, secondId, winnerId });
+      this.$store.commit("updateRating", {
+        opponentId1,
+        opponentId2,
+        winnerId
+      });
       this.startNextRound();
     },
     startNextRound() {
-      this.opponentIds = twoDifferentRandomIdsInRange(1, 10);
+      const { firstId, secondId } = twoDifferentRandomIdsInRange(1, 10);
+      this.opponents = {
+        opponentId1: firstId,
+        opponentId2: secondId
+      };
     }
   }
 };
