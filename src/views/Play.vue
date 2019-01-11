@@ -28,47 +28,62 @@ export default {
   data() {
     return {
       // Model for the current game round.
-      currentRound: {
-        opponent1: {
-          id: null,
-          imageUrl: null
-        },
-        opponent2: {
-          id: null,
-          imageUrl: null
-        }
-      }
+      currentRound: this.roundModelForOpponents(null, null)
     };
   },
   computed: {
-    ...mapGetters(["allOpponentsSortedByTheirRating", "imageUrlForOpponent"])
+    ...mapGetters([
+      "allOpponentsSortedByTheirRating",
+      "imageUrlForOpponent",
+      "currentOpponentIdRange",
+      "gameServerEnabled"
+    ])
   },
   created() {
     // @see: https://vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks.
-    this.startNextRound();
+    if (this.gameServerEnabled) {
+      this.$store.dispatch("startOpponentPolling");
+    }
+    const unwatch = this.$store.watch(
+      (state, getters) => getters.allOpponentsSortedByTheirRating,
+      () => {
+        this.startNextRound();
+        unwatch();
+      }
+    );
   },
   methods: {
     handleRoundResult(winnerId) {
       const opponentId1 = this.currentRound.opponent1.id;
       const opponentId2 = this.currentRound.opponent2.id;
 
-      this.$store.dispatch("updateRatingAction", {
+      const roundResult = {
         opponentId1,
         opponentId2,
         winnerId
-      });
+      };
+
+      if (this.gameServerEnabled) {
+        this.$store.dispatch("publishRoundResult", roundResult);
+      } else {
+        this.$store.dispatch("updateRatingAction", roundResult);
+      }
       this.startNextRound();
     },
     startNextRound() {
-      const { firstId, secondId } = twoDifferentRandomIdsInRange(1, 10);
-      this.currentRound = {
+      const { min, max } = this.currentOpponentIdRange;
+      const { firstId, secondId } = twoDifferentRandomIdsInRange(min, max);
+      this.currentRound = this.roundModelForOpponents(firstId, secondId);
+    },
+    roundModelForOpponents(opponentId1, opponentId2) {
+      return {
         opponent1: {
-          id: firstId,
-          imageUrl: this.imageUrlForOpponent(firstId)
+          id: opponentId1,
+          imageUrl: opponentId1 ? this.imageUrlForOpponent(opponentId1) : ""
         },
         opponent2: {
-          id: secondId,
-          imageUrl: this.imageUrlForOpponent(secondId)
+          id: opponentId2,
+          imageUrl: opponentId2 ? this.imageUrlForOpponent(opponentId2) : ""
         }
       };
     }

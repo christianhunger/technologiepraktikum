@@ -1,7 +1,6 @@
 const EloRating = require("elo-rating");
 
 /**
- *
  * @param state
  * @param opponentId1
  * @param opponentId2
@@ -21,4 +20,20 @@ export const updateRatingMutation = (
   );
   opponent1.rating = playerRating;
   opponent2.rating = opponentRating;
+};
+
+/**
+ * @param state
+ * @param opponents
+ */
+export const setServerOpponents = (state, opponents) => {
+  state.opponents.server = opponents;
+};
+
+/**
+ * @param state
+ * @param isEnabled
+ */
+export const setOpponentPollingEnabled = (state, isEnabled) => {
+  state.config.server.polling.enabled = isEnabled;
 };
