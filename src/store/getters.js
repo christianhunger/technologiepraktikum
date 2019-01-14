@@ -39,15 +39,15 @@ export const currentOpponents = state => {
 /**
  * @param state
  * @param getters
- * @returns {{min: string, max: string}}
+ * @returns {{min: number, max: number}}
  */
 export const currentOpponentIdRange = (state, getters) => {
   const currentOpponentIds = Object.keys(getters.currentOpponents).map(
     opponentId => parseInt(opponentId)
   );
   return {
-    min: `${Math.min(...currentOpponentIds)}`,
-    max: `${Math.max(...currentOpponentIds)}`
+    min: Math.min(...currentOpponentIds),
+    max: Math.max(...currentOpponentIds)
   };
 };
 

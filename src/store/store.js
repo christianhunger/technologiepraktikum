@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-// import { kittens } from "./data/KittenTestdata.js";
+import { kittens } from "./data/KittenTestdata.js";
 import * as Actions from "./actions.js";
 import * as Mutations from "./mutations.js";
 import * as Getters from "./getters.js";
@@ -12,7 +12,7 @@ export default new Vuex.Store({
   state: {
     config: {
       server: {
-        enabled: true,
+        enabled: false,
         polling: {
           enabled: true,
           interval: 5000
@@ -23,7 +23,7 @@ export default new Vuex.Store({
     },
     opponents: {
       local: {
-        // ...kittens
+        ...kittens
       },
       server: {}
     }
