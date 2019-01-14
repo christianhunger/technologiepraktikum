@@ -26,8 +26,16 @@ export const updateRatingMutation = (
  * @param state
  * @param opponents
  */
-export const setServerOpponents = (state, opponents) => {
-  state.opponents.server = opponents;
+export const setServerOpponents = (state, contenders) => {
+  // The game server api returns a sorted list of contenders.
+  // We have to map it to the format we use internally in the vuex store.
+  // See: https://github.com/christianhunger/technologiepraktikum-gameserver
+  const contenderObject = contenders.reduce((obj, contender) => {
+    obj[contender.id] = contender;
+    return obj;
+  }, {});
+
+  state.opponents.server = contenderObject;
 };
 
 /**

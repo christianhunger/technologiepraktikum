@@ -80,7 +80,7 @@ export const pollServerForOpponents = ({ state, dispatch }) => {
  * @returns {Promise<void>}
  */
 export const loadOpponentsFromServer = async ({ commit, getters }) => {
-  const serverResponse = await fetch(`${getters.gameServerUrl}/opponents`);
+  const serverResponse = await fetch(`${getters.gameServerUrl}/contenders`);
   const opponents = await serverResponse.json();
   commit("setServerOpponents", opponents);
 };
