@@ -43,14 +43,18 @@ export default {
     // @see: https://vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks.
     if (this.gameServerEnabled) {
       this.$store.dispatch("startOpponentPolling");
+      // We wait for the list of contenders to change, because only then
+      // we can be sure that new data arrived from the server and start the next round.
+      const unwatch = this.$store.watch(
+        (state, getters) => getters.allOpponentsSortedByTheirRating,
+        () => {
+          this.startNextRound();
+          unwatch();
+        }
+      );
+    } else {
+      this.startNextRound();
     }
-    const unwatch = this.$store.watch(
-      (state, getters) => getters.allOpponentsSortedByTheirRating,
-      () => {
-        this.startNextRound();
-        unwatch();
-      }
-    );
   },
   methods: {
     handleRoundResult(winnerId) {
