@@ -12,7 +12,7 @@ export default new Vuex.Store({
   state: {
     config: {
       server: {
-        enabled: false,
+        enabled: true,
         polling: {
           enabled: true,
           interval: 5000
@@ -21,7 +21,7 @@ export default new Vuex.Store({
         port: "3000"
       }
     },
-    opponents: {
+    contenders: {
       local: {
         ...kittens
       },

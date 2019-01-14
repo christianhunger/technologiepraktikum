@@ -4,10 +4,10 @@
     <h2 class="subtitle">The Current Kitten Ranking</h2>
 
     <ul id="leaderbord">
-      <li v-for="opponent in allOpponentsSortedByTheirRating" :key="opponent.name" style="padding-bottom: 16px">
-        <img :width="imageWidthBasedOnRanking(opponent.rating)" :src="opponent.imageUrl" />
-        <h2 class="subtitle">{{ opponent.name }}</h2>
-        Rating: {{ opponent.rating }}
+      <li v-for="contender in allContendersSortedByTheirRating" :key="contender.name" style="padding-bottom: 16px">
+        <img :width="imageWidthBasedOnRanking(contender.rating)" :src="contender.imageUrl" />
+        <h2 class="subtitle">{{ contender.name }}</h2>
+        Rating: {{ contender.rating }}
       </li>
     </ul>
   </div>
@@ -19,7 +19,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "leaderbord",
   computed: {
-    ...mapGetters(["allOpponentsSortedByTheirRating"])
+    ...mapGetters(["allContendersSortedByTheirRating"])
   },
   methods: {
     imageWidthBasedOnRanking(rating) {

@@ -2,13 +2,13 @@
   <div class="home">
     <h1 class="title">Kitten Compare</h1>
     <h2 class="subtitle">Which one do you like best?</h2>
-    <Comparator :id1="this.currentRound.opponent1.id"
-                :id2="this.currentRound.opponent2.id"
-                :imageUrl1="this.currentRound.opponent1.imageUrl"
-                :imageUrl2="this.currentRound.opponent2.imageUrl"
+    <Comparator :id1="this.currentRound.sample1.contenderId"
+                :id2="this.currentRound.sample2.contenderId"
+                :imageUrl1="this.currentRound.sample1.sampleUrl"
+                :imageUrl2="this.currentRound.sample2.sampleUrl"
                 v-on:winner="handleRoundResult"/>
     <h2 class="subtitle" style="margin-bottom: 6px">The Current Rating:</h2>
-    <RankingStrip :opponentsSortedByRating="allOpponentsSortedByTheirRating"/>
+    <RankingStrip :contendersSortedByRating="allContendersSortedByTheirRating"/>
   </div>
 </template>
 
@@ -28,25 +28,25 @@ export default {
   data() {
     return {
       // Model for the current game round.
-      currentRound: this.roundModelForOpponents(null, null)
+      currentRound: this.roundModelForContenders(null, null)
     };
   },
   computed: {
     ...mapGetters([
-      "allOpponentsSortedByTheirRating",
-      "imageUrlForOpponent",
-      "currentOpponentIdRange",
+      "allContendersSortedByTheirRating",
+      "imageUrlForContender",
+      "currentContenderIdRange",
       "gameServerEnabled"
     ])
   },
   created() {
     // @see: https://vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks.
     if (this.gameServerEnabled) {
-      this.$store.dispatch("startOpponentPolling");
+      this.$store.dispatch("startContenderPolling");
       // We wait for the list of contenders to change, because only then
       // we can be sure that new data arrived from the server and start the next round.
       const unwatch = this.$store.watch(
-        (state, getters) => getters.allOpponentsSortedByTheirRating,
+        (state, getters) => getters.allContendersSortedByTheirRating,
         () => {
           this.startNextRound();
           unwatch();
@@ -58,12 +58,12 @@ export default {
   },
   methods: {
     handleRoundResult(winnerId) {
-      const opponentId1 = this.currentRound.opponent1.id;
-      const opponentId2 = this.currentRound.opponent2.id;
+      const contenderId1 = this.currentRound.sample1.contenderId;
+      const contenderId2 = this.currentRound.sample2.contenderId;
 
       const roundResult = {
-        opponentId1,
-        opponentId2,
+        contenderId1,
+        contenderId2,
         winnerId
       };
 
@@ -75,19 +75,21 @@ export default {
       this.startNextRound();
     },
     startNextRound() {
-      const { min, max } = this.currentOpponentIdRange;
-      const { firstId, secondId } = twoDifferentRandomIdsInRange(min, max);
-      this.currentRound = this.roundModelForOpponents(firstId, secondId);
+      if (this.gameServerEnabled) {
+        const { min, max } = this.currentContenderIdRange;
+        const { firstId, secondId } = twoDifferentRandomIdsInRange(min, max);
+        this.currentRound = this.roundModelForContenders(firstId, secondId);
+      }
     },
-    roundModelForOpponents(opponentId1, opponentId2) {
+    roundModelForContenders(contenderId1, contenderId2) {
       return {
-        opponent1: {
-          id: opponentId1,
-          imageUrl: opponentId1 ? this.imageUrlForOpponent(opponentId1) : ""
+        sample1: {
+          contenderId: contenderId1,
+          sampleUrl: contenderId1 ? this.imageUrlForContender(contenderId1) : ""
         },
-        opponent2: {
-          id: opponentId2,
-          imageUrl: opponentId2 ? this.imageUrlForOpponent(opponentId2) : ""
+        sample2: {
+          contenderId: contenderId2,
+          sampleUrl: contenderId2 ? this.imageUrlForContender(contenderId2) : ""
         }
       };
     }

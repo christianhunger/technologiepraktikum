@@ -5,9 +5,9 @@
  */
 export const updateRatingAction = ({ commit, getters }, parameterObject) => {
   // Getters can't be accessed inside of mutations.
-  // To switch dynamically between local & remote opponents, we have to wrap the commit
+  // To switch dynamically between local & remote contenders, we have to wrap the commit
   // of the mutation in an action.
-  parameterObject.opponentSrc = getters.opponentSrc;
+  parameterObject.contenderSrc = getters.contenderSrc;
   commit("updateRatingMutation", parameterObject);
 };
 
@@ -15,15 +15,15 @@ export const updateRatingAction = ({ commit, getters }, parameterObject) => {
  * @param commit
  * @param getters
  * @param winnerId
- * @param opponentId1
- * @param opponentId2
+ * @param contenderId1
+ * @param contenderId2
  * @returns {Promise<void>}
  */
 export const publishRoundResult = async (
   { commit, getters },
-  { winnerId, opponentId1, opponentId2 }
+  { winnerId, contenderId1, contenderId2 }
 ) => {
-  const loserId = winnerId === opponentId1 ? opponentId2 : opponentId1;
+  const loserId = winnerId === contenderId1 ? contenderId2 : contenderId1;
 
   const requestConfig = {
     method: "POST",
@@ -35,11 +35,11 @@ export const publishRoundResult = async (
   };
 
   const serverResponse = await fetch(
-    `${getters.gameServerUrl}/update-rating`,
+    `${getters.gameServerUrl}/round/result`,
     requestConfig
   );
-  const opponents = await serverResponse.json();
-  commit("setServerOpponents", opponents);
+  const contenders = await serverResponse.json();
+  commit("setServerContenders", contenders);
 };
 
 /**
@@ -47,30 +47,30 @@ export const publishRoundResult = async (
  * @param commit
  * @param dispatch
  */
-export const startOpponentPolling = ({ state, commit, dispatch }) => {
+export const startContenderPolling = ({ state, commit, dispatch }) => {
   const pollingInterval = state.config.server.polling.interval || 1000;
-  commit("setOpponentPollingEnabled", true);
-  dispatch("pollServerForOpponents");
-  setInterval(() => dispatch("pollServerForOpponents"), pollingInterval);
+  commit("setContenderPollingEnabled", true);
+  dispatch("pollServerForContenders");
+  setInterval(() => dispatch("pollServerForContenders"), pollingInterval);
   // TODO: clean-up.
 };
 
 /**
  * @param commit
  */
-export const stopOpponentPolling = ({ commit }) => {
-  commit("setOpponentPollingEnabled", false);
+export const stopContenderPolling = ({ commit }) => {
+  commit("setContenderPollingEnabled", false);
 };
 
 /**
  * @param state
  * @param dispatch
  */
-export const pollServerForOpponents = ({ state, dispatch }) => {
+export const pollServerForContenders = ({ state, dispatch }) => {
   const pollingEnabled = state.config.server.polling.enabled;
 
   if (pollingEnabled) {
-    dispatch("loadOpponentsFromServer");
+    dispatch("loadContendersFromServer");
   }
 };
 
@@ -79,8 +79,8 @@ export const pollServerForOpponents = ({ state, dispatch }) => {
  * @param getters
  * @returns {Promise<void>}
  */
-export const loadOpponentsFromServer = async ({ commit, getters }) => {
+export const loadContendersFromServer = async ({ commit, getters }) => {
   const serverResponse = await fetch(`${getters.gameServerUrl}/contenders`);
-  const opponents = await serverResponse.json();
-  commit("setServerOpponents", opponents);
+  const contenders = await serverResponse.json();
+  commit("setServerContenders", contenders);
 };

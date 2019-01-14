@@ -1,7 +1,7 @@
 <template>
   <ul class="rankingStrip">
-    <li class="rankingStripOpponentWrapper" v-for="opponent in opponentsSortedByRating" :key="opponent.name">
-      <img class="rankingStripOpponentImage" :src="opponent.imageUrl" />
+    <li class="rankingStripContenderWrapper" v-for="contender in contendersSortedByRating" :key="contender.name">
+      <img class="rankingStripContenderImage" :src="contender.imageUrl" />
     </li>
   </ul>
 </template>
@@ -10,21 +10,21 @@
 export default {
   name: "RankingStrip",
   props: {
-    opponentsSortedByRating: Array
+    contendersSortedByRating: Array
   }
 };
 </script>
 
 <style scoped>
-.rankingStripOpponentWrapper {
+.rankingStripContenderWrapper {
   display: inline-block;
 }
-.rankingStripOpponentImage {
+.rankingStripContenderImage {
   width: 64px;
   padding: 1px;
   transition: width 0.2s;
 }
-.rankingStripOpponentImage:hover {
+.rankingStripContenderImage:hover {
   width: 100px;
   transition: width 0.1s;
 }

@@ -2,7 +2,7 @@
  * @param state
  * @returns {string}
  */
-export const opponentSrc = state => {
+export const contenderSrc = state => {
   return state.config.server.enabled ? "server" : "local";
 };
 
@@ -20,19 +20,19 @@ export const gameServerUrl = state =>
  * @param getters
  * @returns {function(*): (string|*)}
  */
-export const imageUrlForOpponent = (state, getters) => opponentId => {
-  return getters.currentOpponents[opponentId].imageUrl;
+export const imageUrlForContender = (state, getters) => contenderId => {
+  return getters.currentContenders[contenderId].imageUrl;
 };
 
 /**
  * @param state
  * @returns {*}
  */
-export const currentOpponents = state => {
+export const currentContenders = state => {
   if (state.config.server.enabled) {
-    return state.opponents.server;
+    return state.contenders.server;
   } else {
-    return state.opponents.local;
+    return state.contenders.local;
   }
 };
 
@@ -41,13 +41,13 @@ export const currentOpponents = state => {
  * @param getters
  * @returns {{min: number, max: number}}
  */
-export const currentOpponentIdRange = (state, getters) => {
-  const currentOpponentIds = Object.keys(getters.currentOpponents).map(
-    opponentId => parseInt(opponentId)
+export const currentContenderIdRange = (state, getters) => {
+  const currentContenderIds = Object.keys(getters.currentContenders).map(
+    contenderId => parseInt(contenderId)
   );
   return {
-    min: Math.min(...currentOpponentIds),
-    max: Math.max(...currentOpponentIds)
+    min: Math.min(...currentContenderIds),
+    max: Math.max(...currentContenderIds)
   };
 };
 
@@ -56,14 +56,14 @@ export const currentOpponentIdRange = (state, getters) => {
  * @param getters
  * @returns {any[]}
  */
-export const allOpponentsSortedByTheirRating = (state, getters) => {
+export const allContendersSortedByTheirRating = (state, getters) => {
   // @see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries.
-  return Object.entries(getters.currentOpponents)
+  return Object.entries(getters.currentContenders)
     .map(entry => {
       return {
         id: entry[0],
         ...entry[1]
       };
     })
-    .sort((opponent1, opponent2) => opponent2.rating - opponent1.rating);
+    .sort((contender1, contender2) => contender2.rating - contender1.rating);
 };
