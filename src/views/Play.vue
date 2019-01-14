@@ -36,7 +36,8 @@ export default {
       "allContendersSortedByTheirRating",
       "imageUrlForContender",
       "currentContenderIdRange",
-      "gameServerEnabled"
+      "gameServerEnabled",
+      "gameServerUrl"
     ])
   },
   created() {
@@ -74,8 +75,11 @@ export default {
       }
       this.startNextRound();
     },
-    startNextRound() {
+    async startNextRound() {
       if (this.gameServerEnabled) {
+        const serverResponse = await fetch(`${this.gameServerUrl}/round/new`);
+        this.currentRound = await serverResponse.json();
+      } else {
         const { min, max } = this.currentContenderIdRange;
         const { firstId, secondId } = twoDifferentRandomIdsInRange(min, max);
         this.currentRound = this.roundModelForContenders(firstId, secondId);
