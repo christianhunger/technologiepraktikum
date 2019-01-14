@@ -16,10 +16,7 @@ export const randomIntInRange = (min, max) => {
     throw "Invalid arguments: max <= min.";
   }
 
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  const result = Math.floor(Math.random() * (max - min)) + min;
-  return result;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 /**
