@@ -71,7 +71,7 @@ export default {
       if (this.gameServerEnabled) {
         this.$store.dispatch("publishRoundResult", roundResult);
       } else {
-        this.$store.dispatch("updateRatingAction", roundResult);
+        this.$store.commit("updateRating", roundResult);
       }
       this.startNextRound();
     },

@@ -1,11 +1,3 @@
-/**
- * @param state
- * @returns {string}
- */
-export const contenderSrc = state => {
-  return state.config.server.enabled ? "server" : "local";
-};
-
 export const gameServerEnabled = state => state.config.server.enabled;
 
 /**

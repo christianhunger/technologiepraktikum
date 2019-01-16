@@ -1,19 +1,6 @@
 /**
  * @param commit
  * @param getters
- * @param parameterObject
- */
-export const updateRatingAction = ({ commit, getters }, parameterObject) => {
-  // Getters can't be accessed inside of mutations.
-  // To switch dynamically between local & remote contenders, we have to wrap the commit
-  // of the mutation in an action.
-  parameterObject.contenderSrc = getters.contenderSrc;
-  commit("updateRatingMutation", parameterObject);
-};
-
-/**
- * @param commit
- * @param getters
  * @param winnerId
  * @param contenderId1
  * @param contenderId2

@@ -2,25 +2,28 @@ import EloRating from "elo-rating";
 
 /**
  * @param state
- * @param contenderSrc
  * @param contenderId1
  * @param contenderId2
  * @param winnerId
  */
-export const updateRatingMutation = (
+export const updateRating = (
   state,
-  { contenderSrc, contenderId1, contenderId2, winnerId }
+  { contenderId1, contenderId2, winnerId }
 ) => {
+  const contenderSrc = state.config.server.enabled ? "server" : "local";
+
   const contender1 = state.contenders[contenderSrc][contenderId1];
   const contender2 = state.contenders[contenderSrc][contenderId2];
+
   const didContender1Win = winnerId === contenderId1;
-  const { playerRating, contenderRating } = EloRating.calculate(
+  const { playerRating, opponentRating } = EloRating.calculate(
     contender1.rating,
     contender2.rating,
     didContender1Win
   );
+
   contender1.rating = playerRating;
-  contender2.rating = contenderRating;
+  contender2.rating = opponentRating;
 };
 
 /**
