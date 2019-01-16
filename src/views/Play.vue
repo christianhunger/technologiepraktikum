@@ -7,7 +7,7 @@
                 :imageUrl1="this.currentRound.sample1.sampleUrl"
                 :imageUrl2="this.currentRound.sample2.sampleUrl"
                 v-on:winner="handleRoundResult"/>
-    <h2 class="subtitle" style="margin-bottom: 6px">The Current Rating:</h2>
+    <h2 class="subtitle ranking-strip-title">The Current Rating:</h2>
     <RankingStrip :contendersSortedByRating="allContendersSortedByTheirRating"/>
   </div>
 </template>
@@ -100,3 +100,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.ranking-strip-title {
+  margin-bottom: 6px;
+}
+</style>

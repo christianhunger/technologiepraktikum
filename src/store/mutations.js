@@ -1,7 +1,8 @@
-const EloRating = require("elo-rating");
+import EloRating from "elo-rating";
 
 /**
  * @param state
+ * @param contenderSrc
  * @param contenderId1
  * @param contenderId2
  * @param winnerId

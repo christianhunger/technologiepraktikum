@@ -3,8 +3,8 @@
     <h1 class="title">Leaderbord</h1>
     <h2 class="subtitle">The Current Kitten Ranking</h2>
 
-    <ul id="leaderbord">
-      <li v-for="contender in allContendersSortedByTheirRating" :key="contender.name" style="padding-bottom: 16px">
+    <ul id="leaderboard">
+      <li v-for="contender in allContendersSortedByTheirRating" :key="contender.name" class="leaderboard-entry">
         <img :width="imageWidthBasedOnRanking(contender.rating)" :src="contender.imageUrl" />
         <h2 class="subtitle">{{ contender.name }}</h2>
         Rating: {{ contender.rating }}
@@ -17,7 +17,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: "leaderbord",
+  name: "leaderboard",
   computed: {
     ...mapGetters(["allContendersSortedByTheirRating"])
   },
@@ -29,3 +29,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.leaderboard-entry {
+  padding-bottom: 16px;
+}
+</style>
