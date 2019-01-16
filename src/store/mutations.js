@@ -44,8 +44,10 @@ export const setServerContenders = (state, contenders) => {
 
 /**
  * @param state
- * @param isEnabled
+ * @param enabled
+ * @param intervalId
  */
-export const setContenderPollingEnabled = (state, isEnabled) => {
-  state.config.server.polling.enabled = isEnabled;
+export const configureContenderPolling = (state, { enabled, intervalId }) => {
+  state.config.server.polling.enabled = enabled;
+  state.config.server.polling.intervalId = intervalId;
 };

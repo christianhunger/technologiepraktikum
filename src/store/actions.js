@@ -34,27 +34,36 @@ export const publishRoundResult = async (
  * @param commit
  * @param dispatch
  */
-export const startContenderPolling = ({ state, commit, dispatch }) => {
-  const pollingInterval = state.config.server.polling.interval || 1000;
-  commit("setContenderPollingEnabled", true);
+export const startContenderPolling = ({ getters, commit, dispatch }) => {
+  const pollingInterval = getters.pollingConfig.interval || 1000;
+  // Immediately load contenders from server, then start interval.
   dispatch("pollServerForContenders");
-  setInterval(() => dispatch("pollServerForContenders"), pollingInterval);
-  // TODO: clean-up.
+
+  const intervalId = setInterval(
+    () => dispatch("pollServerForContenders"),
+    pollingInterval
+  );
+  commit("configureContenderPolling", { enabled: true, intervalId });
 };
 
 /**
  * @param commit
  */
-export const stopContenderPolling = ({ commit }) => {
-  commit("setContenderPollingEnabled", false);
+export const stopContenderPolling = ({ getters, commit }) => {
+  const intervalId = getters.pollingConfig.intervalId;
+
+  if (intervalId != null) {
+    clearInterval(intervalId);
+  }
+  commit("configureContenderPolling", { enabled: false, intervalId: null });
 };
 
 /**
  * @param state
  * @param dispatch
  */
-export const pollServerForContenders = ({ state, dispatch }) => {
-  const pollingEnabled = state.config.server.polling.enabled;
+export const pollServerForContenders = ({ getters, dispatch }) => {
+  const pollingEnabled = getters.pollingConfig.enabled;
 
   if (pollingEnabled) {
     dispatch("loadContendersFromServer");

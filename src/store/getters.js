@@ -9,6 +9,12 @@ export const gameServerUrl = state =>
 
 /**
  * @param state
+ * @returns {state.config.server.polling|{intervalId, interval, enabled}}
+ */
+export const pollingConfig = state => state.config.server.polling;
+
+/**
+ * @param state
  * @param getters
  * @returns {function(*): (string|*)}
  */

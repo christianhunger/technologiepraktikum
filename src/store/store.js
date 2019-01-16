@@ -12,10 +12,11 @@ export default new Vuex.Store({
   state: {
     config: {
       server: {
-        enabled: false,
+        enabled: true,
         polling: {
           enabled: true,
-          interval: 5000
+          interval: 5000,
+          intervalId: null
         },
         host: "127.0.0.1",
         port: "3000"
