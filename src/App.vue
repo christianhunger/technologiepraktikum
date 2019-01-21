@@ -1,8 +1,7 @@
 <template>
-  <div id="app">
-    Clicks: {{ counter }}
-    <button @click="clickedHandler">++</button>
-  </div>
+    <div id="app">
+        Hello {{ name }}!
+    </div>
 </template>
 
 <script>
@@ -10,13 +9,8 @@ export default {
   name: "App",
   data() {
     return {
-      counter: 0
+      name: "world"
     };
-  },
-  methods: {
-    clickedHandler() {
-      this.counter++;
-    }
   }
 };
 </script>
