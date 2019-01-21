@@ -7,28 +7,22 @@
                 :imageUrl1="currentRound.sample1.sampleUrl"
                 :imageUrl2="currentRound.sample2.sampleUrl"
                 v-on:winner="handleRoundResult"/>
-    <h2 class="subtitle ranking-strip-title">The Current Rating:</h2>
-    <RankingStrip :contendersSortedByRating="allContendersSortedByTheirRating"/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import Comparator from "@/components/Comparator";
-import RankingStrip from "@/components/RankingStrip.vue";
 import { twoDifferentRandomIdsInRange } from "@/util/IdGeneratorUtil";
-import {
-  sortContendersByTheirRating,
-  currentContenderIdRange
-} from "@/util/contenders";
+import { currentContenderIdRange } from "@/util/contenders";
 import { kittens } from "@/util/KittenTestdata.js";
 import { updateRating } from "@/util/contenders";
 
 export default {
   name: "play",
   components: {
-    Comparator,
-    RankingStrip
+    Comparator
+    // RankingStrip
   },
   data() {
     return {
@@ -38,11 +32,6 @@ export default {
       // Model for the current game round.
       currentRound: this.roundModelForContenders(null, null)
     };
-  },
-  computed: {
-    allContendersSortedByTheirRating() {
-      return sortContendersByTheirRating(this.currentContenders);
-    }
   },
   created() {
     // @see: https://vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks.
@@ -89,9 +78,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.ranking-strip-title {
-  margin-bottom: 6px;
-}
-</style>
