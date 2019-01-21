@@ -35,27 +35,12 @@ export default {
     ...mapGetters([
       "allContendersSortedByTheirRating",
       "imageUrlForContender",
-      "currentContenderIdRange",
-      "gameServerEnabled",
-      "gameServerUrl"
+      "currentContenderIdRange"
     ])
   },
   created() {
     // @see: https://vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks.
-    if (this.gameServerEnabled) {
-      this.$store.dispatch("startContenderPolling");
-      // We wait for the list of contenders to change, because only then
-      // we can be sure that new data arrived from the server and start the next round.
-      const unwatch = this.$store.watch(
-        (state, getters) => getters.allContendersSortedByTheirRating,
-        () => {
-          this.startNextRound();
-          unwatch();
-        }
-      );
-    } else {
-      this.startNextRound();
-    }
+    this.startNextRound();
   },
   methods: {
     handleRoundResult(winnerId) {
@@ -68,22 +53,13 @@ export default {
         winnerId
       };
 
-      if (this.gameServerEnabled) {
-        this.$store.dispatch("publishRoundResult", roundResult);
-      } else {
-        this.$store.commit("updateRating", roundResult);
-      }
+      this.$store.commit("updateRating", roundResult);
       this.startNextRound();
     },
     async startNextRound() {
-      if (this.gameServerEnabled) {
-        const serverResponse = await fetch(`${this.gameServerUrl}/round/new`);
-        this.currentRound = await serverResponse.json();
-      } else {
-        const { min, max } = this.currentContenderIdRange;
-        const { firstId, secondId } = twoDifferentRandomIdsInRange(min, max);
-        this.currentRound = this.roundModelForContenders(firstId, secondId);
-      }
+      const { min, max } = this.currentContenderIdRange;
+      const { firstId, secondId } = twoDifferentRandomIdsInRange(min, max);
+      this.currentRound = this.roundModelForContenders(firstId, secondId);
     },
     roundModelForContenders(contenderId1, contenderId2) {
       return {
