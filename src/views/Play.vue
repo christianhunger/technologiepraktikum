@@ -21,15 +21,20 @@ import {
   sortContendersByTheirRating,
   currentContenderIdRange
 } from "@/util/contenders";
+import { kittens } from "@/util/KittenTestdata.js";
+import { updateRating } from "@/util/contenders";
 
 export default {
-  name: "home",
+  name: "play",
   components: {
     Comparator,
     RankingStrip
   },
   data() {
     return {
+      // set the initial state
+      currentContenders: kittens,
+
       // Model for the current game round.
       currentRound: this.roundModelForContenders(null, null)
     };
@@ -54,7 +59,10 @@ export default {
         winnerId
       };
 
-      this.$emit("updateRating", roundResult);
+      this.currentContenders = updateRating(
+        this.currentContenders,
+        roundResult
+      );
       this.startNextRound();
     },
     startNextRound() {
@@ -78,9 +86,6 @@ export default {
         }
       };
     }
-  },
-  props: {
-    currentContenders: Object
   }
 };
 </script>

@@ -55,12 +55,3 @@ export const currentContenderIdRange = contenders => {
     max: Math.max(...currentContenderIds)
   };
 };
-
-/**
- * @param contenders
- * @param contenderId
- * @returns {function(*): (string|*)}
- */
-export const imageUrlForContender = (contenders, contenderId) => {
-  return contenders[contenderId].imageUrl;
-};

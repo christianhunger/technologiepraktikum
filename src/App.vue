@@ -1,30 +1,17 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Play</router-link> |
-      <router-link to="/leaderboard">Leaderboard</router-link>
-    </div>
     <img src="logo.png" width="64"/>
-    <router-view :currentContenders="kittens" @updateRating="handleUpdateRating"/>
+    <play-component/>
   </div>
 </template>
 
 <script>
-import { kittens } from "./util/KittenTestdata.js";
-import { updateRating } from "./util/contenders";
+import PlayComponent from "@/views/Play";
 
 export default {
   name: "App",
-  data() {
-    return {
-      kittens
-    };
-  },
-  methods: {
-    handleUpdateRating(roundResult) {
-      // create a new list of rated kittens based on the old kitten array and the round result
-      this.kittens = updateRating(this.kittens, roundResult);
-    }
+  components: {
+    PlayComponent
   }
 };
 </script>
@@ -36,17 +23,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>
