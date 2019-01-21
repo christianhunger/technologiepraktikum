@@ -14,18 +14,23 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { sortContendersByTheirRating } from "@/util/contenders";
 
 export default {
   name: "leaderboard",
   computed: {
-    ...mapGetters(["allContendersSortedByTheirRating"])
+    allContendersSortedByTheirRating() {
+      return sortContendersByTheirRating(this.currentContenders);
+    }
   },
   methods: {
     imageWidthBasedOnRanking(rating) {
       const scalingFactor = 1 + (rating - 1000) / 160;
       return Math.floor(512 * scalingFactor);
     }
+  },
+  props: {
+    currentContenders: Object
   }
 };
 </script>

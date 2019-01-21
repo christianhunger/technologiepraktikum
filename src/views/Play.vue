@@ -2,10 +2,10 @@
   <div class="home">
     <h1 class="title">Kitten Compare</h1>
     <h2 class="subtitle">Which one do you like best?</h2>
-    <Comparator :id1="this.currentRound.sample1.contenderId"
-                :id2="this.currentRound.sample2.contenderId"
-                :imageUrl1="this.currentRound.sample1.sampleUrl"
-                :imageUrl2="this.currentRound.sample2.sampleUrl"
+    <Comparator :id1="currentRound.sample1.contenderId"
+                :id2="currentRound.sample2.contenderId"
+                :imageUrl1="currentRound.sample1.sampleUrl"
+                :imageUrl2="currentRound.sample2.sampleUrl"
                 v-on:winner="handleRoundResult"/>
     <h2 class="subtitle ranking-strip-title">The Current Rating:</h2>
     <RankingStrip :contendersSortedByRating="allContendersSortedByTheirRating"/>
@@ -13,11 +13,14 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 // @ is an alias to /src
-import Comparator from "@/components/Comparator.vue";
+import Comparator from "@/components/Comparator";
 import RankingStrip from "@/components/RankingStrip.vue";
-import { twoDifferentRandomIdsInRange } from "@/util/IdGeneratorUtil.js";
+import { twoDifferentRandomIdsInRange } from "@/util/IdGeneratorUtil";
+import {
+  sortContendersByTheirRating,
+  currentContenderIdRange
+} from "@/util/contenders";
 
 export default {
   name: "home",
@@ -32,11 +35,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-      "allContendersSortedByTheirRating",
-      "imageUrlForContender",
-      "currentContenderIdRange"
-    ])
+    allContendersSortedByTheirRating() {
+      return sortContendersByTheirRating(this.currentContenders);
+    }
   },
   created() {
     // @see: https://vuejs.org/v2/guide/instance.html#Instance-Lifecycle-Hooks.
@@ -53,11 +54,11 @@ export default {
         winnerId
       };
 
-      this.$store.commit("updateRating", roundResult);
+      this.$emit("updateRating", roundResult);
       this.startNextRound();
     },
-    async startNextRound() {
-      const { min, max } = this.currentContenderIdRange;
+    startNextRound() {
+      const { min, max } = currentContenderIdRange(this.currentContenders);
       const { firstId, secondId } = twoDifferentRandomIdsInRange(min, max);
       this.currentRound = this.roundModelForContenders(firstId, secondId);
     },
@@ -65,14 +66,21 @@ export default {
       return {
         sample1: {
           contenderId: contenderId1,
-          sampleUrl: contenderId1 ? this.imageUrlForContender(contenderId1) : ""
+          sampleUrl: contenderId1
+            ? this.currentContenders[contenderId1].imageUrl
+            : ""
         },
         sample2: {
           contenderId: contenderId2,
-          sampleUrl: contenderId2 ? this.imageUrlForContender(contenderId2) : ""
+          sampleUrl: contenderId2
+            ? this.currentContenders[contenderId2].imageUrl
+            : ""
         }
       };
     }
+  },
+  props: {
+    currentContenders: Object
   }
 };
 </script>

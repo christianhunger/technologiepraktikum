@@ -5,9 +5,29 @@
       <router-link to="/leaderboard">Leaderboard</router-link>
     </div>
     <img src="logo.png" width="64"/>
-    <router-view/>
+    <router-view :currentContenders="kittens" @updateRating="handleUpdateRating"/>
   </div>
 </template>
+
+<script>
+import { kittens } from "./util/KittenTestdata.js";
+import { updateRating } from "./util/contenders";
+
+export default {
+  name: "App",
+  data() {
+    return {
+      kittens
+    };
+  },
+  methods: {
+    handleUpdateRating(roundResult) {
+      // create a new list of rated kittens based on the old kitten array and the round result
+      this.kittens = updateRating(this.kittens, roundResult);
+    }
+  }
+};
+</script>
 
 <style>
 #app {
