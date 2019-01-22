@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RankingStrip.vue sound match the snapshot 1`] = `
+<ul class="rankingStrip">
+  <li class="rankingStripContenderWrapper"><img src="fluffykins.png" class="rankingStripContenderImage"></li>
+  <li class="rankingStripContenderWrapper"><img src="furrrr.png" class="rankingStripContenderImage"></li>
+</ul>
+`;
