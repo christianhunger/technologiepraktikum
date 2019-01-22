@@ -12,7 +12,7 @@ export default new Vuex.Store({
   state: {
     config: {
       server: {
-        enabled: true,
+        enabled: !window.Cypress,
         polling: {
           enabled: true,
           interval: 5000,
