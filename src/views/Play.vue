@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1 class="title">Kitten Compare</h1>
+    <h1 class="title">UI Catwalk</h1>
     <h2 class="subtitle">Which one do you like best?</h2>
     <Comparator :id1="this.currentRound.sample1.contenderId"
                 :id2="this.currentRound.sample2.contenderId"
