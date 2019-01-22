@@ -1,7 +1,7 @@
 <template>
   <div class="about">
-    <h1 class="title">Leaderbord</h1>
-    <h2 class="subtitle">The Current Kitten Ranking</h2>
+    <h1 class="title">Leaderboard</h1>
+    <h2 class="subtitle">The Current Ranking</h2>
 
     <ul id="leaderboard">
       <li v-for="contender in allContendersSortedByTheirRating" :key="contender.name" class="leaderboard-entry">
