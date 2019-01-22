@@ -18,8 +18,8 @@ export default new Vuex.Store({
           interval: 5000,
           intervalId: null
         },
-        host: "127.0.0.1",
-        port: "3000"
+        host: "node.cloud.dmwe.de",
+        port: "80"
       }
     },
     contenders: {
