@@ -4,11 +4,13 @@
     <h2 class="subtitle">The Current Ranking</h2>
 
     <ul id="leaderboard">
-      <li v-for="contender in allContendersSortedByTheirRating" :key="contender.name" class="leaderboard-entry">
-        <img :width="imageWidthBasedOnRanking(contender.rating)" :src="contender.imageUrl" />
-        <h2 class="subtitle">{{ contender.name }}</h2>
-        Rating: {{ contender.rating }}
-      </li>
+      <transition-group name="flip-list" tag="ul">
+        <li v-for="contender in allContendersSortedByTheirRating" :key="contender.name" class="leaderboard-entry">
+          <img :width="imageWidthBasedOnRanking(contender.rating)" :src="contender.imageUrl" />
+          <h2 class="subtitle">{{ contender.name }}</h2>
+          Rating: {{ contender.rating }}
+        </li>
+      </transition-group>
     </ul>
   </div>
 </template>
@@ -33,5 +35,8 @@ export default {
 <style scoped>
 .leaderboard-entry {
   padding-bottom: 16px;
+}
+.flip-list-move {
+  transition: transform 1s;
 }
 </style>

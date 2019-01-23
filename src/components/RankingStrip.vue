@@ -1,8 +1,10 @@
 <template>
   <ul class="rankingStrip">
-    <li class="rankingStripContenderWrapper" v-for="contender in contendersSortedByRating" :key="contender.name">
-      <img class="rankingStripContenderImage" :src="contender.imageUrl" />
-    </li>
+    <transition-group name="flip-list" tag="ul">
+      <li class="rankingStripContenderWrapper" v-for="contender in contendersSortedByRating" :key="contender.name">
+        <img class="rankingStripContenderImage" :src="contender.imageUrl" />
+      </li>
+    </transition-group>
   </ul>
 </template>
 
@@ -27,5 +29,8 @@ export default {
 .rankingStripContenderImage:hover {
   width: 100px;
   transition: width 0.1s;
+}
+.flip-list-move {
+  transition: transform 1s;
 }
 </style>
